@@ -11,9 +11,9 @@
     --surface: #111118;
     --surface2: #18181f;
     --border: #2a2a35;
-    --accent: #7c5cfc;
-    --accent2: #a78bfa;
-    --accent-glow: rgba(124,92,252,0.18);
+    --accent: #1e90ff;
+    --accent2: #5bb8ff;
+    --accent-glow: rgba(30,144,255,0.18);
     --green: #22d3a0;
     --green-dim: rgba(34,211,160,0.12);
     --text: #f0eeff;
@@ -31,7 +31,7 @@
     font-size: 15px;
     min-height: 100vh;
     background-image: 
-      radial-gradient(ellipse 800px 600px at 10% 0%, rgba(124,92,252,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 800px 600px at 10% 0%, rgba(30,144,255,0.07) 0%, transparent 70%),
       radial-gradient(ellipse 600px 500px at 90% 100%, rgba(34,211,160,0.05) 0%, transparent 70%);
   }
 
@@ -46,19 +46,15 @@
     backdrop-filter: blur(12px);
     position: sticky; top: 0; z-index: 100;
   }
-  .logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 22px;
-    letter-spacing: -0.5px;
-    background: linear-gradient(90deg, #fff 0%, var(--accent2) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  .logo img {
+    height: 40px;
+    width: auto;
+    display: block;
   }
-  .logo span { color: var(--accent); -webkit-text-fill-color: var(--accent); }
   header p {
     font-size: 13px;
     color: var(--muted);
-    background: rgba(124,92,252,0.1);
+    background: rgba(30,144,255,0.1);
     border: 1px solid var(--border);
     padding: 5px 14px;
     border-radius: 20px;
@@ -83,7 +79,7 @@
     padding: 28px;
     transition: border-color 0.2s;
   }
-  .card:focus-within { border-color: rgba(124,92,252,0.5); }
+  .card:focus-within { border-color: rgba(30,144,255,0.5); }
 
   .section-title {
     font-family: 'Syne', sans-serif;
@@ -128,8 +124,8 @@
     transition: border-color 0.2s, background 0.2s;
   }
   .bloco.active {
-    border-color: rgba(124,92,252,0.6);
-    background: rgba(124,92,252,0.05);
+    border-color: rgba(30,144,255,0.6);
+    background: rgba(30,144,255,0.05);
   }
   .bloco-header {
     display: flex;
@@ -245,7 +241,7 @@
   }
   .comp-opt input:checked + label {
     border-color: var(--accent);
-    background: rgba(124,92,252,0.12);
+    background: rgba(30,144,255,0.12);
     color: var(--text);
   }
   .comp-opt input:checked + label strong { color: #fff; }
@@ -288,7 +284,7 @@
   .canal-opt label .icon { font-size: 18px; }
   .canal-opt input:checked + label {
     border-color: var(--accent);
-    background: rgba(124,92,252,0.12);
+    background: rgba(30,144,255,0.12);
     color: #fff;
   }
   .canal-count {
@@ -429,7 +425,7 @@
   }
   .mult-opt input:checked + label {
     border-color: var(--accent);
-    background: rgba(124,92,252,0.12);
+    background: rgba(30,144,255,0.12);
     color: var(--text);
   }
 
@@ -443,7 +439,7 @@
     border: 1px solid rgba(124,92,252,0.4);
     border-radius: 20px;
     padding: 28px;
-    background-image: radial-gradient(ellipse 300px 200px at 50% -20%, rgba(124,92,252,0.12) 0%, transparent 70%);
+    background-image: radial-gradient(ellipse 300px 200px at 50% -20%, rgba(30,144,255,0.12) 0%, transparent 70%);
   }
 
   .result-label {
@@ -586,7 +582,7 @@
 <body>
 
 <header>
-  <div class="logo">Tec<span>UP</span></div>
+  <div class="logo"><img src="logo.png" alt="TecUP"></div>
   <p>Calculadora de Precificação · Uso Interno</p>
 </header>
 
@@ -844,8 +840,8 @@
     <div class="result-card">
       <div id="result-empty" class="empty-state">
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="8" width="32" height="32" rx="6" stroke="#7c5cfc" stroke-width="2"/>
-          <path d="M16 24h16M16 18h10M16 30h8" stroke="#7c5cfc" stroke-width="2" stroke-linecap="round"/>
+          <rect x="8" y="8" width="32" height="32" rx="6" stroke="#1e90ff" stroke-width="2"/>
+          <path d="M16 24h16M16 18h10M16 30h8" stroke="#1e90ff" stroke-width="2" stroke-linecap="round"/>
         </svg>
         <p>Selecione ao menos um bloco de serviço para gerar a precificação.</p>
       </div>
