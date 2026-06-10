@@ -806,23 +806,23 @@
 
       <div class="mult-row">
         <div class="mult-opt">
-          <input type="radio" name="mult" id="mult-285" value="2.85" onchange="calcular()">
+          <input type="radio" name="mult" id="mult-285" value="2.50" onchange="calcular()">
           <label for="mult-285">
-            <strong>2,85×</strong>
+            <strong>2,50×</strong>
             Negociação / fechamento rápido
           </label>
         </div>
         <div class="mult-opt">
-          <input type="radio" name="mult" id="mult-325" value="3.25" checked onchange="calcular()">
+          <input type="radio" name="mult" id="mult-325" value="2.85" checked onchange="calcular()">
           <label for="mult-325">
-            <strong>3,25×</strong>
+            <strong>2,85×</strong>
             Cliente padrão (recomendado)
           </label>
         </div>
         <div class="mult-opt">
-          <input type="radio" name="mult" id="mult-350" value="3.50" onchange="calcular()">
+          <input type="radio" name="mult" id="mult-350" value="3.00" onchange="calcular()">
           <label for="mult-350">
-            <strong>3,50×</strong>
+            <strong>3,00×</strong>
             Cliente complexo / grande
           </label>
         </div>
@@ -965,7 +965,7 @@ function calcular() {
 
   // setup
   const multEl = document.querySelector('input[name="mult"]:checked');
-  const mult = multEl ? parseFloat(multEl.value) : 3.25;
+  const mult = multEl ? parseFloat(multEl.value) : 2.85;
   const setup = Math.round(totalMensal * mult);
   const setup50 = Math.round(setup / 2);
 
