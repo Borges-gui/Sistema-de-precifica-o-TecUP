@@ -71,6 +71,17 @@
     align-items: start;
   }
 
+  .result-col {
+    position: sticky;
+    top: 85px;
+    max-height: calc(100vh - 105px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .result-col::-webkit-scrollbar { width: 4px; }
+  .result-col::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
   /* ── CARD ── */
   .card {
     background: var(--surface);
@@ -287,6 +298,27 @@
     background: rgba(30,144,255,0.12);
     color: #fff;
   }
+
+  .canal-principal-opt { position: relative; }
+  .canal-principal-opt input { display: none; }
+  .canal-principal-opt label {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px; padding: 10px 6px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    transition: all 0.15s;
+    background: var(--surface2);
+    text-align: center;
+  }
+  .canal-principal-opt label .icon { font-size: 18px; }
+  .canal-principal-opt input:checked + label {
+    border-color: var(--accent);
+    background: rgba(30,144,255,0.12);
+    color: #fff;
+  }
   .canal-count {
     font-size: 12px; color: var(--muted); margin-top: 10px;
   }
@@ -432,8 +464,14 @@
   /* ── RESULTADO LATERAL ── */
   .result-panel {
     position: sticky;
-    top: 88px;
+    top: 85px;
+    max-height: calc(100vh - 105px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
   }
+  .result-panel::-webkit-scrollbar { width: 4px; }
+  .result-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
   .result-card {
     background: var(--surface);
     border: 1px solid rgba(124,92,252,0.4);
@@ -569,6 +607,118 @@
     margin-top: 12px;
   }
 
+  /* ── DESCONTOS ── */
+  .desconto-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .desconto-block .slabel {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .desconto-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 8px;
+  }
+  .desconto-toggle-row input[type="checkbox"] { display: none; }
+  .desconto-chk {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    background: transparent;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .desconto-toggle-row input:checked ~ .desconto-chk-wrap .desconto-chk,
+  .desconto-chk.checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .desconto-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 8px;
+    user-select: none;
+  }
+  .desconto-row:last-child { margin-bottom: 0; }
+  .desconto-row.selected {
+    border-color: var(--accent);
+    background: rgba(30,144,255,0.08);
+  }
+  .desconto-row input { display: none; }
+  .desconto-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .desconto-row.selected .desconto-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+  .desconto-dot::after {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    display: none;
+  }
+  .desconto-row.selected .desconto-dot::after { display: block; }
+  .desconto-info { flex: 1; }
+  .desconto-info strong {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    display: block;
+  }
+  .desconto-info em {
+    font-style: normal;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .desconto-pct {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--danger);
+  }
+  .desconto-row.selected .desconto-pct { color: var(--accent2); }
+  .desconto-result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0 0;
+    margin-top: 6px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .desconto-result-row .dr-label { color: var(--muted); }
+  .desconto-result-row .dr-val {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--green);
+    font-size: 15px;
+  }
+
   /* responsive */
   @media(max-width: 780px) {
     .container { grid-template-columns: 1fr; }
@@ -701,27 +851,45 @@
 
       <!-- CANAIS EXTRAS -->
       <div class="card" style="background:var(--surface2);border-color:var(--border);padding:18px;margin-top:6px;">
-        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:4px;">Canais Adicionais <span style="color:var(--muted);font-weight:400;font-size:12px;">+R$ 500 cada</span></div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Além do WhatsApp (já incluído nos blocos acima)</div>
-        <div class="canais-grid">
-          <div class="canal-opt">
-            <input type="checkbox" id="canal-ig" value="500" onchange="calcular()">
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:4px;">Canais Adicionais</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Além do WhatsApp (já incluído nos blocos acima)</div>
+
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <div class="mult-opt" style="flex:1;">
+            <input type="radio" name="canal-tipo" id="canal-espelhado" value="250" checked onchange="calcular()">
+            <label for="canal-espelhado" style="flex-direction:column;gap:2px;padding:10px 8px;">
+              <strong style="font-size:15px;">R$ 250</strong>
+              <span style="font-size:11px;color:var(--muted);font-weight:400;">Mesmo fluxo do WhatsApp</span>
+            </label>
+          </div>
+          <div class="mult-opt" style="flex:1;">
+            <input type="radio" name="canal-tipo" id="canal-proprio" value="500" onchange="calcular()">
+            <label for="canal-proprio" style="flex-direction:column;gap:2px;padding:10px 8px;">
+              <strong style="font-size:15px;">R$ 500</strong>
+              <span style="font-size:11px;color:var(--muted);font-weight:400;">Fluxo próprio / regras diferentes</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="canais-grid" id="canais-principal">
+          <div class="canal-principal-opt">
+            <input type="checkbox" id="canal-ig" onchange="calcular()">
             <label for="canal-ig"><span class="icon">📸</span>Instagram</label>
           </div>
-          <div class="canal-opt">
-            <input type="checkbox" id="canal-tg" value="500" onchange="calcular()">
+          <div class="canal-principal-opt">
+            <input type="checkbox" id="canal-tg" onchange="calcular()">
             <label for="canal-tg"><span class="icon">✈️</span>Telegram</label>
           </div>
-          <div class="canal-opt">
-            <input type="checkbox" id="canal-em" value="500" onchange="calcular()">
+          <div class="canal-principal-opt">
+            <input type="checkbox" id="canal-em" onchange="calcular()">
             <label for="canal-em"><span class="icon">📧</span>E-mail</label>
           </div>
-          <div class="canal-opt">
-            <input type="checkbox" id="canal-tel" value="500" onchange="calcular()">
+          <div class="canal-principal-opt">
+            <input type="checkbox" id="canal-tel" onchange="calcular()">
             <label for="canal-tel"><span class="icon">📞</span>Telefone</label>
           </div>
-          <div class="canal-opt">
-            <input type="checkbox" id="canal-fb" value="500" onchange="calcular()">
+          <div class="canal-principal-opt">
+            <input type="checkbox" id="canal-fb" onchange="calcular()">
             <label for="canal-fb"><span class="icon">💬</span>Facebook</label>
           </div>
         </div>
@@ -729,9 +897,33 @@
       </div>
     </div>
 
+    <!-- FILIAIS -->
+    <div class="card" style="margin-bottom:24px" id="card-filiais">
+      <div class="section-title">02 &nbsp; Filiais Adicionais</div>
+      <h2>Implantação em múltiplas filiais</h2>
+      <p class="card-desc">Se o cliente possui mais de uma unidade, configure cada filial abaixo. O WhatsApp já está incluído em cada filial — configure canais extras e tipo de fluxo individualmente.</p>
+
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+        <label style="font-size:13px;color:var(--muted);font-weight:500;white-space:nowrap;">Filiais adicionais:</label>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button onclick="alterarFiliais(-1)" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">−</button>
+          <span id="filiais-count" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;min-width:28px;text-align:center;">0</span>
+          <button onclick="alterarFiliais(1)" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">+</button>
+        </div>
+        <span style="font-size:12px;color:var(--muted);">além da unidade principal</span>
+      </div>
+
+      <div id="filiais-container"></div>
+
+      <div id="filiais-total-bar" style="display:none;margin-top:12px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-size:13px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="color:var(--muted);">Total filiais adicionais/mês</span>
+        <span id="filiais-total-val" style="font-family:'Syne',sans-serif;font-weight:700;color:var(--green);font-size:15px;">R$ 0</span>
+      </div>
+    </div>
+
     <!-- COMPLEXIDADE HELPER -->
     <div class="card" style="margin-bottom:24px">
-      <div class="section-title">02 &nbsp; Análise de Complexidade</div>
+      <div class="section-title">03 &nbsp; Análise de Complexidade</div>
       <h2>Auxílio para definir complexidade</h2>
       <p class="card-desc">Responda os 4 fatores abaixo. O sistema define a complexidade predominante e aplica automaticamente os preços corretos a todos os serviços selecionados.</p>
 
@@ -778,7 +970,7 @@
 
     <!-- VOLUME -->
     <div class="card" style="margin-bottom:24px">
-      <div class="section-title">03 &nbsp; Volume de Atendimento</div>
+      <div class="section-title">04 &nbsp; Volume de Atendimento</div>
       <h2>Estimativa de mensagens diárias</h2>
       <p class="card-desc">O volume não altera a mensalidade da TecUp — serve para estimar o custo variável da IA e API para o cliente.</p>
 
@@ -800,30 +992,37 @@
 
     <!-- SETUP MULTIPLICADOR -->
     <div class="card">
-      <div class="section-title">04 &nbsp; Implementação (Setup)</div>
+      <div class="section-title">05 &nbsp; Implementação (Setup)</div>
       <h2>Multiplicador do setup</h2>
       <p class="card-desc">O setup é cobrado uma única vez, 50% na assinatura e 50% na conclusão. Valor = multiplicador × mensalidade.</p>
 
-      <div class="mult-row">
+      <div class="mult-row" style="grid-template-columns: repeat(4,1fr);">
         <div class="mult-opt">
-          <input type="radio" name="mult" id="mult-285" value="2.50" onchange="calcular()">
-          <label for="mult-285">
-            <strong>2,50×</strong>
-            Negociação / fechamento rápido
+          <input type="radio" name="mult" id="mult-215" value="2.15" onchange="calcular()">
+          <label for="mult-215">
+            <strong>2,15×</strong>
+            Simples
           </label>
         </div>
         <div class="mult-opt">
-          <input type="radio" name="mult" id="mult-325" value="2.85" checked onchange="calcular()">
+          <input type="radio" name="mult" id="mult-235" value="2.35" checked onchange="calcular()">
+          <label for="mult-235">
+            <strong>2,35×</strong>
+            Médio
+          </label>
+        </div>
+        <div class="mult-opt">
+          <input type="radio" name="mult" id="mult-265" value="2.65" onchange="calcular()">
+          <label for="mult-265">
+            <strong>2,65×</strong>
+            Alto
+          </label>
+        </div>
+        <div class="mult-opt">
+          <input type="radio" name="mult" id="mult-325" value="3.25" onchange="calcular()">
           <label for="mult-325">
-            <strong>2,85×</strong>
-            Cliente padrão (recomendado)
-          </label>
-        </div>
-        <div class="mult-opt">
-          <input type="radio" name="mult" id="mult-350" value="3.00" onchange="calcular()">
-          <label for="mult-350">
-            <strong>3,00×</strong>
-            Cliente complexo / grande
+            <strong>3,25×</strong>
+            Enterprise
           </label>
         </div>
       </div>
@@ -869,6 +1068,68 @@
           <div class="setup-split">
             <b id="res-setup-50">R$ 0</b> na assinatura &nbsp;·&nbsp; <b id="res-setup-50b">R$ 0</b> na conclusão
           </div>
+          <div id="res-setup-desc-row" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;" id="res-setup-desc-label">Implementação c/ desconto</div>
+            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--accent2);" id="res-setup-desc-val">R$ 0</div>
+          </div>
+        </div>
+
+        <!-- DESCONTOS -->
+        <div class="divider"></div>
+        <div class="section-title" style="font-size:10px;margin-bottom:12px;">Descontos</div>
+
+        <!-- Desconto: Baixo impacto no negócio -->
+        <div class="desconto-block">
+          <div class="slabel">Impacto no negócio do cliente</div>
+
+          <!-- 6 meses -->
+          <div style="font-size:12px;color:var(--muted);font-weight:500;margin-bottom:6px;">Contrato de 6 meses</div>
+          <div class="desconto-row" id="row-baixo-impacto-6" onclick="toggleDescontoBaixoImpacto6()">
+            <div class="desconto-dot" id="dot-baixo-impacto-6"></div>
+            <div class="desconto-info">
+              <strong>Impacto baixo no negócio</strong>
+              <em>Projeto complementar · Equipe já estruturada</em>
+            </div>
+            <span class="desconto-pct" id="pct-baixo-6">−30%</span>
+          </div>
+          <div class="desconto-result-row" id="res-baixo-6-row" style="display:none">
+            <span class="dr-label">Mensalidade ajustada (6m)</span>
+            <span class="dr-val" id="res-baixo-6-val">R$ —</span>
+          </div>
+
+          <div style="height:12px;"></div>
+
+          <!-- 12 meses + baixo impacto -->
+          <div style="font-size:12px;color:var(--muted);font-weight:500;margin-bottom:6px;">Contrato de 12 meses</div>
+          <div class="desconto-row" id="row-baixo-impacto-12" onclick="toggleDescontoBaixoImpacto12()">
+            <div class="desconto-dot" id="dot-baixo-impacto-12"></div>
+            <div class="desconto-info">
+              <strong>Impacto baixo no negócio</strong>
+              <em>Projeto complementar · Equipe já estruturada</em>
+            </div>
+            <span class="desconto-pct" id="pct-baixo-12">−40%</span>
+          </div>
+          <div class="desconto-result-row" id="res-baixo-12-row" style="display:none">
+            <span class="dr-label">Mensalidade ajustada (12m)</span>
+            <span class="dr-val" id="res-baixo-12-val">R$ —</span>
+          </div>
+        </div>
+
+        <!-- Desconto: Fidelidade anual -->
+        <div class="desconto-block">
+          <div class="slabel">Fidelidade — Contrato anual</div>
+          <div class="desconto-row" id="row-fidelidade-12" onclick="toggleDescontoFidelidade()">
+            <div class="desconto-dot" id="dot-fidelidade-12"></div>
+            <div class="desconto-info">
+              <strong>Desconto de fidelidade</strong>
+              <em>Cliente fecha 12 meses · Sem baixo impacto</em>
+            </div>
+            <span class="desconto-pct" id="pct-fidelidade">−15%</span>
+          </div>
+          <div class="desconto-result-row" id="res-fidelidade-row" style="display:none">
+            <span class="dr-label">Mensalidade fidelidade (12m)</span>
+            <span class="dr-val" id="res-fidelidade-val">R$ —</span>
+          </div>
         </div>
 
         <button class="btn-reset" onclick="resetar()">↺ Limpar tudo</button>
@@ -879,13 +1140,126 @@
 </div><!-- end container -->
 
 <script>
+// ── FILIAIS ──
+let numFiliais = 0;
+const filiais = []; // array of { fluxo: '250'|'500', canais: Set }
+
+const canaisOpcoes = [
+  { id:'ig', icon:'📸', label:'Instagram' },
+  { id:'tg', icon:'✈️', label:'Telegram' },
+  { id:'em', icon:'📧', label:'E-mail' },
+  { id:'tel', icon:'📞', label:'Telefone' },
+  { id:'fb', icon:'💬', label:'Facebook' },
+];
+
+function alterarFiliais(delta) {
+  const novo = Math.max(0, numFiliais + delta);
+  if (novo > numFiliais) {
+    filiais.push({ fluxo: '250', canais: new Set() });
+  } else if (novo < numFiliais) {
+    filiais.pop();
+  }
+  numFiliais = novo;
+  renderFiliais();
+  calcular();
+}
+
+function renderFiliais() {
+  document.getElementById('filiais-count').textContent = numFiliais;
+  const container = document.getElementById('filiais-container');
+
+  if (numFiliais === 0) {
+    container.innerHTML = '';
+    document.getElementById('filiais-total-bar').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('filiais-total-bar').style.display = 'flex';
+
+  container.innerHTML = filiais.map((f, i) => `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <span style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;">Filial ${i+1}</span>
+        <span id="filial-badge-${i}" style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--green);background:var(--green-dim);padding:3px 10px;border-radius:20px;">R$ —</span>
+      </div>
+
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:500;">Tipo de fluxo (WhatsApp da filial)</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <div class="mult-opt" style="flex:1;">
+          <input type="radio" name="filial-fluxo-${i}" id="filial-${i}-espelhado" value="250" ${f.fluxo==='250'?'checked':''} onchange="setFilialFluxo(${i},'250')">
+          <label for="filial-${i}-espelhado" style="flex-direction:column;gap:1px;padding:8px 6px;">
+            <strong style="font-size:13px;">R$ 250</strong>
+            <span style="font-size:10px;color:var(--muted);font-weight:400;">Mesmo fluxo</span>
+          </label>
+        </div>
+        <div class="mult-opt" style="flex:1;">
+          <input type="radio" name="filial-fluxo-${i}" id="filial-${i}-proprio" value="500" ${f.fluxo==='500'?'checked':''} onchange="setFilialFluxo(${i},'500')">
+          <label for="filial-${i}-proprio" style="flex-direction:column;gap:1px;padding:8px 6px;">
+            <strong style="font-size:13px;">R$ 500</strong>
+            <span style="font-size:10px;color:var(--muted);font-weight:400;">Fluxo próprio</span>
+          </label>
+        </div>
+      </div>
+
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:500;">Canais extras nesta filial <span style="font-size:10px;">(além do WhatsApp)</span></div>
+      <div class="canais-grid" style="grid-template-columns:repeat(5,1fr);">
+        ${canaisOpcoes.map(c => `
+          <div class="canal-opt">
+            <input type="checkbox" id="filial-${i}-${c.id}" ${f.canais.has(c.id)?'checked':''} onchange="toggleFilialCanal(${i},'${c.id}')">
+            <label for="filial-${i}-${c.id}" style="padding:8px 4px;"><span class="icon">${c.icon}</span>${c.label}</label>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  atualizarBadgesFiliais();
+}
+
+function setFilialFluxo(i, valor) {
+  filiais[i].fluxo = valor;
+  renderFiliais();
+  calcular();
+}
+
+function toggleFilialCanal(i, canalId) {
+  if (filiais[i].canais.has(canalId)) {
+    filiais[i].canais.delete(canalId);
+  } else {
+    filiais[i].canais.add(canalId);
+  }
+  atualizarBadgesFiliais();
+  calcular();
+}
+
+function calcularTotalFiliais() {
+  return filiais.reduce((total, f) => {
+    const whatsapp = parseInt(f.fluxo);
+    const extras = f.canais.size * parseInt(f.fluxo);
+    return total + whatsapp + extras;
+  }, 0);
+}
+
+function atualizarBadgesFiliais() {
+  filiais.forEach((f, i) => {
+    const el = document.getElementById('filial-badge-'+i);
+    if (!el) return;
+    const whatsapp = parseInt(f.fluxo);
+    const extras = f.canais.size * parseInt(f.fluxo);
+    el.textContent = 'R$ ' + fmt(whatsapp + extras) + '/mês';
+  });
+  const total = calcularTotalFiliais();
+  const totalEl = document.getElementById('filiais-total-val');
+  if (totalEl) totalEl.textContent = 'R$ ' + fmt(total) + '/mês';
+}
+
 // Base prices per service per complexity level
 const precos = {
-  atendimento: { simples: 1500, medio: 2000, complexo: 2500 },
-  vendas:       { simples: 1000, medio: 1500, complexo: 2000 },
-  cobranca:     { simples: 800,  medio: 1150, complexo: 1500 },
-  agendamento:  { simples: 800,  medio: 1150, complexo: 1500 },
-  suporte:      { simples: 800,  medio: 1150, complexo: 1500 },
+  atendimento: { simples: 1000, medio: 1400, complexo: 1800 },
+  vendas:       { simples: 800,  medio: 1200, complexo: 1600 },
+  cobranca:     { simples: 600,  medio: 850,  complexo: 1100 },
+  agendamento:  { simples: 600,  medio: 850,  complexo: 1100 },
+  suporte:      { simples: 600,  medio: 850,  complexo: 1200 },
 };
 
 const blocos = {
@@ -920,9 +1294,26 @@ function getGlobalComp() {
 }
 
 function toggleBloco(id) {
+  const dependeAtendimento = ['vendas','agendamento','suporte'];
   blocos[id].ativo = !blocos[id].ativo;
   const el = document.getElementById('bloco-'+id);
   el.classList.toggle('active', blocos[id].ativo);
+
+  // Se ativar um serviço que depende de Atendimento, ativa automaticamente
+  if (blocos[id].ativo && dependeAtendimento.includes(id)) {
+    blocos['atendimento'].ativo = true;
+    document.getElementById('bloco-atendimento').classList.add('active');
+  }
+
+  // Se tentar desativar Atendimento mas ainda há dependentes ativos, mantém ativo
+  if (id === 'atendimento' && !blocos['atendimento'].ativo) {
+    const temDependente = dependeAtendimento.some(d => blocos[d].ativo);
+    if (temDependente) {
+      blocos['atendimento'].ativo = true;
+      document.getElementById('bloco-atendimento').classList.add('active');
+    }
+  }
+
   calcular();
 }
 
@@ -944,12 +1335,15 @@ function calcular() {
   });
 
   // canais
-  const canaisEls = document.querySelectorAll('.canal-opt input:checked');
-  const canaisVal = canaisEls.length * 500;
+  const canaisEls = document.querySelectorAll('#canais-principal .canal-principal-opt input:checked');
+  const canalTipoEl = document.querySelector('input[name="canal-tipo"]:checked');
+  const canalUnitario = canalTipoEl ? parseInt(canalTipoEl.value) : 250;
+  const canaisVal = canaisEls.length * canalUnitario;
   const cCount = canaisEls.length;
+  const tipoLabel = canalUnitario === 500 ? 'fluxo próprio' : 'espelhado';
   document.getElementById('canal-count').innerHTML =
     cCount === 0 ? 'Nenhum canal adicional selecionado' :
-    `<b>${cCount}</b> canal${cCount>1?'is':''} selecionado${cCount>1?'s':''} · <b>+R$ ${fmt(canaisVal)}</b>`;
+    `<b>${cCount}</b> canal${cCount>1?'is':''} (${tipoLabel}) · <b>+R$ ${fmt(canaisVal)}</b>`;
 
   // soma mensalidade
   const ativos = Object.keys(blocos).filter(id => blocos[id].ativo);
@@ -963,9 +1357,14 @@ function calcular() {
 
   let totalMensal = ativos.reduce((s,id) => s + precos[id][comp], 0) + canaisVal;
 
+  // filiais
+  const filiaisVal = calcularTotalFiliais();
+  atualizarBadgesFiliais();
+  totalMensal += filiaisVal;
+
   // setup
   const multEl = document.querySelector('input[name="mult"]:checked');
-  const mult = multEl ? parseFloat(multEl.value) : 2.85;
+  const mult = multEl ? parseFloat(multEl.value) : 2.35;
   const setup = Math.round(totalMensal * mult);
   const setup50 = Math.round(setup / 2);
 
@@ -1014,6 +1413,12 @@ function calcular() {
       <span class="bval">R$ ${fmt(canaisVal)}</span>
     </div>`;
   }
+  if (filiaisVal > 0) {
+    rows += `<div class="breakdown-row">
+      <span class="bname">Filiais adicionais (${numFiliais}×)</span>
+      <span class="bval">R$ ${fmt(filiaisVal)}</span>
+    </div>`;
+  }
   rows += `<div class="divider" style="margin:8px 0"></div>
   <div class="breakdown-row total-row">
     <span class="bname">Total mensalidade</span>
@@ -1024,6 +1429,8 @@ function calcular() {
   document.getElementById('res-setup').textContent = `R$ ${fmt(setup)}`;
   document.getElementById('res-setup-50').textContent = `R$ ${fmt(setup50)}`;
   document.getElementById('res-setup-50b').textContent = `R$ ${fmt(setup - setup50)}`;
+
+  atualizarDescontos(totalMensal);
 }
 
 function calcularComp() {
@@ -1074,10 +1481,15 @@ function resetar() {
     document.getElementById('bloco-'+id).classList.remove('active');
     document.getElementById('badge-'+id).textContent = 'R$ —';
   });
+  // reset filiais
+  numFiliais = 0;
+  filiais.length = 0;
+  renderFiliais();
   // reset canais
-  document.querySelectorAll('.canal-opt input').forEach(el => el.checked = false);
+  document.querySelectorAll('#canais-principal .canal-principal-opt input').forEach(el => el.checked = false);
+  document.getElementById('canal-espelhado').checked = true;
   // reset mult
-  document.getElementById('mult-325').checked = true;
+  document.getElementById('mult-235').checked = true;
   // reset vol
   document.getElementById('vol-diario').value = '';
   // reset complexity selects
@@ -1085,8 +1497,126 @@ function resetar() {
   document.getElementById('fator-fluxos').selectedIndex = 0;
   document.getElementById('fator-personalizacao').selectedIndex = 0;
   document.getElementById('fator-integracao').selectedIndex = 0;
+  // reset descontos
+  descontoBaixoImpacto6 = false;
+  descontoBaixoImpacto12 = false;
+  descontoFidelidade = false;
+  syncDesconto('baixo-impacto-6', false);
+  syncDesconto('baixo-impacto-12', false);
+  syncDesconto('fidelidade-12', false);
   calcularVolume();
   calcularComp();
+}
+
+// ── DESCONTOS ──
+let descontoBaixoImpacto6 = false;
+let descontoBaixoImpacto12 = false;
+let descontoFidelidade = false;
+
+function toggleDescontoBaixoImpacto6() {
+  descontoBaixoImpacto6 = !descontoBaixoImpacto6;
+  // impacto baixo 12m e fidelidade são mutuamente exclusivos
+  if (descontoBaixoImpacto6) {
+    descontoBaixoImpacto12 = false;
+    descontoFidelidade = false;
+    syncDesconto('baixo-impacto-12', false);
+    syncDesconto('fidelidade-12', false);
+  }
+  syncDesconto('baixo-impacto-6', descontoBaixoImpacto6);
+  calcular();
+}
+
+function toggleDescontoBaixoImpacto12() {
+  descontoBaixoImpacto12 = !descontoBaixoImpacto12;
+  if (descontoBaixoImpacto12) {
+    descontoBaixoImpacto6 = false;
+    descontoFidelidade = false;
+    syncDesconto('baixo-impacto-6', false);
+    syncDesconto('fidelidade-12', false);
+  }
+  syncDesconto('baixo-impacto-12', descontoBaixoImpacto12);
+  calcular();
+}
+
+function toggleDescontoFidelidade() {
+  descontoFidelidade = !descontoFidelidade;
+  if (descontoFidelidade) {
+    descontoBaixoImpacto6 = false;
+    descontoBaixoImpacto12 = false;
+    syncDesconto('baixo-impacto-6', false);
+    syncDesconto('baixo-impacto-12', false);
+  }
+  syncDesconto('fidelidade-12', descontoFidelidade);
+  calcular();
+}
+
+function syncDesconto(key, ativo) {
+  const row = document.getElementById('row-' + key);
+  const dot = document.getElementById('dot-' + key);
+  if (!row || !dot) return;
+  if (ativo) {
+    row.classList.add('selected');
+    dot.classList.add('checked');
+  } else {
+    row.classList.remove('selected');
+    dot.classList.remove('checked');
+  }
+}
+
+function atualizarDescontos(totalMensal) {
+  const multEl = document.querySelector('input[name="mult"]:checked');
+  const mult = multEl ? parseFloat(multEl.value) : 2.35;
+  const setup = Math.round(totalMensal * mult);
+
+  // helper para mostrar/ocultar desconto no setup
+  function mostrarSetupDesc(pct, label) {
+    const row = document.getElementById('res-setup-desc-row');
+    if (pct > 0 && totalMensal > 0) {
+      const val = Math.round(setup * (1 - pct));
+      document.getElementById('res-setup-desc-val').textContent = 'R$ ' + fmt(val);
+      document.getElementById('res-setup-desc-label').textContent = label;
+      row.style.display = 'block';
+    } else {
+      row.style.display = 'none';
+    }
+  }
+
+  // Baixo impacto 6 meses (−30%)
+  const row6 = document.getElementById('res-baixo-6-row');
+  if (descontoBaixoImpacto6 && totalMensal > 0) {
+    const val = Math.round(totalMensal * 0.70);
+    document.getElementById('res-baixo-6-val').textContent = 'R$ ' + fmt(val);
+    row6.style.display = 'flex';
+    mostrarSetupDesc(0.30, 'Implementação c/ desconto −30%');
+  } else {
+    row6.style.display = 'none';
+  }
+
+  // Baixo impacto 12 meses (−40%)
+  const row12 = document.getElementById('res-baixo-12-row');
+  if (descontoBaixoImpacto12 && totalMensal > 0) {
+    const val = Math.round(totalMensal * 0.60);
+    document.getElementById('res-baixo-12-val').textContent = 'R$ ' + fmt(val);
+    row12.style.display = 'flex';
+    mostrarSetupDesc(0.40, 'Implementação c/ desconto −40%');
+  } else {
+    row12.style.display = 'none';
+  }
+
+  // Fidelidade 12 meses (−15%) — sem desconto no setup
+  const rowF = document.getElementById('res-fidelidade-row');
+  if (descontoFidelidade && totalMensal > 0) {
+    const val = Math.round(totalMensal * 0.85);
+    document.getElementById('res-fidelidade-val').textContent = 'R$ ' + fmt(val);
+    rowF.style.display = 'flex';
+  } else {
+    rowF.style.display = 'none';
+  }
+
+  // se nenhum desconto de impacto ativo, oculta setup desc
+  if (!descontoBaixoImpacto6 && !descontoBaixoImpacto12) {
+    document.getElementById('res-setup-desc-row').style.display = 'none';
+  }
 }
 
 // init
