@@ -1144,27 +1144,13 @@
     </div>
   </div>
 
-  <!-- VOLUME + CUSTOS DE IA E MENSAGERIA -->
+  <!-- TARIFÁRIO META -->
   <div class="card">
-    <div class="section-title">05 &nbsp; Volume, IA e Tarifário Meta</div>
-    <h2>Estimativa de custos repassados ao cliente</h2>
-    <p class="card-desc">Esses custos não alteram a mensalidade da TecUp — servem para estimar, e apresentar ao cliente, o custo variável que ele paga diretamente (API de IA + tarifário oficial do WhatsApp/Meta).</p>
+    <div class="section-title">05 &nbsp; Tarifário Meta (WhatsApp Business)</div>
+    <h2>Estimativa de custo repassado ao cliente</h2>
+    <p class="card-desc">Esse custo não altera a mensalidade da TecUp — serve para estimar, e apresentar ao cliente, o custo que ele paga diretamente à Meta pela tarifa oficial do WhatsApp Business Platform.</p>
 
-    <div class="vol-row">
-      <input type="number" class="vol-input" id="vol-diario" placeholder="Ex: 100" min="0" oninput="calcularVolume()">
-      <div class="vol-badge" id="vol-badge">— mensagens/dia</div>
-    </div>
-
-    <div class="custo-api" id="custo-api" style="display:none">
-      <b>Custo estimado de IA (GPT-4o mini) — pago diretamente na plataforma de IA:</b><br>
-      Volume mensal estimado: <b id="vol-mensal">—</b> mensagens<br>
-      Custo estimado: <span class="range" id="custo-range">—</span>
-      <div style="margin-top:8px;font-size:11px;color:var(--muted);">
-        ⚙️ Estimativa com base no preço do GPT-4o mini (US$ 0,15/1M tokens de entrada · US$ 0,60/1M tokens de saída), considerando uma faixa de ~200 a 500 tokens de entrada e ~100 a 250 tokens de saída por mensagem processada pela IA.
-      </div>
-    </div>
-
-    <div class="meta-block">
+    <div class="meta-block" style="margin-top:0;">
       <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:10px;">📲 Tarifário Oficial WhatsApp Business (Meta)</div>
 
       <div class="meta-alert">
@@ -1352,11 +1338,7 @@
   <!-- CUSTOS DO CLIENTE (referência, fora da mensalidade) -->
   <div class="cliente-custos-card" id="cliente-custos-card" style="display:none">
     <div class="section-title" style="font-size:10px;">Referência · Custos do cliente (fora da mensalidade)</div>
-    <p class="cliente-custos-note">Valores pagos pelo cliente diretamente às plataformas (OpenAI e Meta), não incluídos na mensalidade da TecUp. Use como referência ao apresentar a proposta.</p>
-    <div class="cc-row">
-      <div class="cc-name">IA (GPT-4o mini)<span>Estimativa mensal com base no volume informado</span></div>
-      <div class="cc-val" id="cc-ia-val">R$ 0 – R$ 0</div>
-    </div>
+    <p class="cliente-custos-note">Valor pago pelo cliente diretamente à Meta, não incluído na mensalidade da TecUp. Use como referência ao apresentar a proposta.</p>
     <div class="cc-row">
       <div class="cc-name">Tarifário Meta — até 30/09/2026<span>Utilidade + Marketing + Serviço (gratuito)</span></div>
       <div class="cc-val" id="cc-meta-antes-val">R$ 0</div>
@@ -1752,37 +1734,6 @@ function calcularComp() {
   calcular();
 }
 
-// ── CUSTO DE IA (GPT-4o mini) ──
-// Preços reais OpenAI: US$0,15/1M tokens entrada · US$0,60/1M tokens saída
-// (~R$0,00077/1000 tokens entrada · ~R$0,00306/1000 tokens saída)
-// Faixa estimada por mensagem processada pela IA: 200-500 tokens entrada, 100-250 tokens saída
-const IA_CUSTO_MIN_POR_1000MSG = 0.50; // R$
-const IA_CUSTO_MAX_POR_1000MSG = 1.20; // R$
-
-function calcularVolume() {
-  const v = parseInt(document.getElementById('vol-diario').value) || 0;
-  const badge = document.getElementById('vol-badge');
-  const custo = document.getElementById('custo-api');
-  if (!v) {
-    badge.className='vol-badge'; badge.textContent='— mensagens/dia'; custo.style.display='none';
-    atualizarCustosCliente();
-    return;
-  }
-
-  if (v <= 100) { badge.className='vol-badge baixo'; badge.textContent=`${v} msg/dia · Baixo`; }
-  else if (v <= 500) { badge.className='vol-badge medio'; badge.textContent=`${v} msg/dia · Médio`; }
-  else { badge.className='vol-badge alto'; badge.textContent=`${v} msg/dia · Alto`; }
-
-  const mensal = v * 30;
-  const min = mensal / 1000 * IA_CUSTO_MIN_POR_1000MSG;
-  const max = mensal / 1000 * IA_CUSTO_MAX_POR_1000MSG;
-  document.getElementById('vol-mensal').textContent = fmt(mensal);
-  document.getElementById('custo-range').textContent = `R$ ${fmt2(min)} – R$ ${fmt2(max)}/mês`;
-  custo.style.display = 'block';
-
-  atualizarCustosCliente();
-}
-
 // ── TARIFÁRIO META ──
 const META_UTILIDADE = 0.04;
 const META_MARKETING = 0.35;
@@ -1808,13 +1759,6 @@ function calcularMeta() {
 }
 
 function atualizarCustosCliente() {
-  const v = parseInt(document.getElementById('vol-diario').value) || 0;
-  const mensal = v * 30;
-  const min = mensal / 1000 * IA_CUSTO_MIN_POR_1000MSG;
-  const max = mensal / 1000 * IA_CUSTO_MAX_POR_1000MSG;
-  const iaEl = document.getElementById('cc-ia-val');
-  if (iaEl) iaEl.textContent = `R$ ${fmt2(min)} – R$ ${fmt2(max)}`;
-
   const u = parseInt(document.getElementById('meta-utilidade').value) || 0;
   const m = parseInt(document.getElementById('meta-marketing').value) || 0;
   const s = parseInt(document.getElementById('meta-servico').value) || 0;
@@ -1850,8 +1794,7 @@ function resetar() {
   document.getElementById('canal-espelhado').checked = true;
   // reset mult
   document.getElementById('mult-235').checked = true;
-  // reset vol
-  document.getElementById('vol-diario').value = '';
+  // reset meta
   document.getElementById('meta-utilidade').value = '';
   document.getElementById('meta-marketing').value = '';
   document.getElementById('meta-servico').value = '';
@@ -1867,7 +1810,6 @@ function resetar() {
   syncDesconto('baixo-impacto-6', false);
   syncDesconto('baixo-impacto-12', false);
   syncDesconto('fidelidade-12', false);
-  calcularVolume();
   calcularMeta();
   calcularComp();
 }
@@ -1980,7 +1922,6 @@ function atualizarDescontos(totalMensal) {
 // init
 calcular();
 calcularComp();
-calcularVolume();
 calcularMeta();
 </script>
 </body>
