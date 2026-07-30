@@ -1624,7 +1624,8 @@ function calcular() {
   document.getElementById('cliente-custos-card').style.display = 'block';
   document.getElementById('tab-btn-pricing').classList.add('has-data');
 
-  let totalMensal = ativos.reduce((s,id) => s + precos[id][comp], 0) + canaisVal;
+  const baseServicos = ativos.reduce((s,id) => s + precos[id][comp], 0);
+  let totalMensal = baseServicos + canaisVal;
 
   // filiais
   const filiaisVal = calcularTotalFiliais();
@@ -1634,10 +1635,10 @@ function calcular() {
   // CRM
   totalMensal += crmVal;
 
-  // setup
+  // setup — multiplicador aplicado apenas sobre os blocos de serviço (sem canais, CRM ou filiais)
   const multEl = document.querySelector('input[name="mult"]:checked');
   const mult = multEl ? parseFloat(multEl.value) : 2.35;
-  const setup = Math.round(totalMensal * mult);
+  const setup = Math.round(baseServicos * mult);
   const setup50 = Math.round(setup / 2);
 
   // render
@@ -1708,7 +1709,7 @@ function calcular() {
   document.getElementById('res-setup-50').textContent = `R$ ${fmt(setup50)}`;
   document.getElementById('res-setup-50b').textContent = `R$ ${fmt(setup - setup50)}`;
 
-  atualizarDescontos(totalMensal);
+  atualizarDescontos(totalMensal, baseServicos);
 }
 
 function calcularComp() {
@@ -1868,10 +1869,10 @@ function syncDesconto(key, ativo) {
   }
 }
 
-function atualizarDescontos(totalMensal) {
+function atualizarDescontos(totalMensal, baseServicos) {
   const multEl = document.querySelector('input[name="mult"]:checked');
   const mult = multEl ? parseFloat(multEl.value) : 2.35;
-  const setup = Math.round(totalMensal * mult);
+  const setup = Math.round(baseServicos * mult);
 
   function mostrarSetupDesc(pct, label) {
     const row = document.getElementById('res-setup-desc-row');
